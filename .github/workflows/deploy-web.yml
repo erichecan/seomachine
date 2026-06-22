@@ -1,0 +1,75 @@
+name: Deploy Web to Cloud Run
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "web/**"
+      - ".github/workflows/deploy-web.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # TODO: 填写以下 GCP 配置
+      PROJECT_ID: YOUR_GCP_PROJECT_ID
+      REGION: asia-east1
+      SERVICE_NAME: seomachine-web
+      ARTIFACT_REGISTRY: seomachine
+      IMAGE: asia-east1-docker.pkg.dev/YOUR_GCP_PROJECT_ID/seomachine/web:latest
+      # TODO: 填写后端实际 URL（Next.js 是全栈，此处可留空或填写域名）
+      BACKEND_URL: ""
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Get secrets from Secret Manager
+        id: secrets
+        run: |
+          NEXTAUTH_SECRET=$(gcloud secrets versions access latest --secret=nextauth-secret --project=${{ env.PROJECT_ID }} 2>/dev/null || echo "")
+          DATABASE_URL=$(gcloud secrets versions access latest --secret=database-url --project=${{ env.PROJECT_ID }} 2>/dev/null || echo "")
+          echo "::add-mask::$NEXTAUTH_SECRET"
+          echo "::add-mask::$DATABASE_URL"
+          echo "nextauth_secret=$NEXTAUTH_SECRET" >> $GITHUB_OUTPUT
+          echo "database_url=$DATABASE_URL" >> $GITHUB_OUTPUT
+
+      - name: Build
+        working-directory: web
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_BUILD_SHA="${GITHUB_SHA::8}" \
+            --build-arg NEXT_PUBLIC_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            -t ${{ env.IMAGE }} .
+
+      - run: docker push ${{ env.IMAGE }}
+
+      - name: Deploy
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.IMAGE }} \
+            --region ${{ env.REGION }} \
+            --project ${{ env.PROJECT_ID }} \
+            --allow-unauthenticated \
+            --min-instances=0 \
+            --max-instances=5 \
+            --cpu=1 \
+            --memory=1Gi \
+            --set-secrets="DATABASE_URL=database-url:latest,NEXTAUTH_SECRET=nextauth-secret:latest,OPENAI_API_KEY=openai-api-key:latest,CHANNEL_ENCRYPTION_KEY=channel-encryption-key:latest,LEMONSQUEEZY_API_KEY=lemonsqueezy-api-key:latest,LEMONSQUEEZY_WEBHOOK_SECRET=lemonsqueezy-webhook-secret:latest" \
+            --quiet
+
+      - name: Verify
+        run: |
+          URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} --project ${{ env.PROJECT_ID }} \
+            --format="value(status.url)")
+          echo "✅ Deployed: $URL"
+          curl -sf -o /dev/null -w "HTTP %{http_code}" "$URL"

@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Plan {
+  free
+  basic
+  pro
+  team
+}
+
+enum ArticleStatus {
+  draft
+  published
+  archived
+}
+
+enum ChannelType {
+  wordpress
+  shopify
+  webhook
+}
+
+enum ChannelStatus {
+  active
+  error
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  name             String?
+  avatarUrl        String?
+  passwordHash     String?
+  emailVerified    DateTime?
+  plan             Plan      @default(free)
+  planExpiresAt    DateTime?
+  lsCustomerId     String?   @unique
+  lsSubscriptionId String?   @unique
+  freeArticlesUsed Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  articles     Article[]
+  channels     Channel[]
+  usageRecords UsageRecord[]
+  brandConfig  BrandConfig?
+  sessions     Session[]
+  accounts     Account[]
+
+  @@index([email])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Article {
+  id               String        @id @default(cuid())
+  userId           String
+  title            String
+  content          String        @db.Text
+  contentHtml      String?       @db.Text
+  targetKeyword    String
+  metaTitle        String?
+  metaDescription  String?
+  slug             String?
+  seoScore         Int?
+  wordCount        Int           @default(0)
+  language         String        @default("en")
+  status           ArticleStatus @default(draft)
+  publishedAt      DateTime?
+  publishedChannelId String?
+  externalPostId   String?
+  llmModel         String?
+  tokensInput      Int           @default(0)
+  tokensOutput     Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel Channel? @relation(fields: [publishedChannelId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model Channel {
+  id               String        @id @default(cuid())
+  userId           String
+  name             String
+  type             ChannelType
+  configEncrypted  String        @db.Text
+  status           ChannelStatus @default(active)
+  lastTestedAt     DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articles Article[]
+
+  @@index([userId])
+}
+
+model UsageRecord {
+  id           String   @id @default(cuid())
+  userId       String
+  period       String   // YYYY-MM
+  articlesCount Int     @default(0)
+  tokensInput  Int      @default(0)
+  tokensOutput Int      @default(0)
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, period])
+  @@index([userId])
+}
+
+model BrandConfig {
+  userId          String   @id
+  brandVoice      String?  @db.Text
+  styleGuide      String?  @db.Text
+  seoGuidelines   String?  @db.Text
+  internalLinks   Json     @default("[]")
+  targetKeywords  Json     @default("[]")
+  writingExamples Json     @default("[]")
+  competitorSites Json     @default("[]")
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LsEvent {
+  id        String   @id  // Lemon Squeezy event ID
+  eventName String
+  processed Boolean  @default(false)
+  payload   Json
+  createdAt DateTime @default(now())
+}

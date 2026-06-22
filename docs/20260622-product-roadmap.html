@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Machine — 产品路线图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0f;
+    color: #e2e8f0;
+    line-height: 1.6;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 1px solid #1e293b;
+    padding: 60px 40px 50px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.4);
+    color: #a5b4fc;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    color: #64748b;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+  .hero-products {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .product-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-size: 14px;
+    color: #cbd5e1;
+  }
+  .product-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-saas { background: #06b6d4; }
+  .dot-shared { background: #10b981; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  .section {
+    padding: 50px 0;
+    border-bottom: 1px solid #1e293b;
+  }
+  .section:last-child { border-bottom: none; }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 30px;
+  }
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .stat-card {
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-number { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: #64748b; }
+  .color-green { color: #10b981; }
+  .color-yellow { color: #f59e0b; }
+  .color-blue { color: #6366f1; }
+  .color-gray { color: #475569; }
+
+  .arch-box {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 30px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: #8b949e;
+  }
+  .arch-box .highlight { color: #58a6ff; }
+  .arch-box .green { color: #3fb950; }
+  .arch-box .yellow { color: #d29922; }
+  .arch-box .purple { color: #bc8cff; }
+  .arch-box .cyan { color: #39c5cf; }
+
+  .phases { display: flex; flex-direction: column; gap: 0; }
+  .phase {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 30px;
+    position: relative;
+  }
+  .phase:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 60px;
+    top: 44px;
+    bottom: -1px;
+    width: 2px;
+    background: #1e293b;
+  }
+  .phase-left {
+    padding-top: 12px;
+    text-align: right;
+    padding-right: 20px;
+    position: relative;
+  }
+  .phase-left::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 20px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid;
+  }
+  .phase.done .phase-left::after { background: #10b981; border-color: #10b981; }
+  .phase.active .phase-left::after { background: #f59e0b; border-color: #f59e0b; box-shadow: 0 0 12px rgba(245,158,11,0.5); }
+  .phase.todo .phase-left::after { background: #0a0a0f; border-color: #334155; }
+
+  .phase-tag {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .phase.done .phase-tag { background: rgba(16,185,129,0.1); color: #10b981; }
+  .phase.active .phase-tag { background: rgba(245,158,11,0.1); color: #f59e0b; }
+  .phase.todo .phase-tag { background: rgba(71,85,105,0.2); color: #475569; }
+  .phase-number { font-size: 11px; color: #334155; }
+
+  .phase-right { padding: 20px 0 40px; }
+  .phase-name { font-size: 18px; font-weight: 600; color: #f1f5f9; margin-bottom: 6px; }
+  .phase-desc { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+  .tasks { display: flex; flex-direction: column; gap: 8px; }
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .task-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+  .task-icon.done { background: #10b981; color: #fff; }
+  .task-icon.todo { background: #1e293b; border: 1.5px solid #334155; }
+  .task-icon.partial { background: #f59e0b; color: #fff; }
+
+  .task-text { color: #cbd5e1; flex: 1; }
+  .task-text.done-text { color: #475569; text-decoration: line-through; }
+
+  .task-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .badge-saas { background: rgba(6,182,212,0.15); color: #67e8f9; }
+  .badge-shared { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .cap-card {
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .cap-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .cap-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .cap-title { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+  .cap-status { font-size: 10px; color: #64748b; }
+  .cap-items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .cap-items li { font-size: 12px; color: #64748b; display: flex; align-items: center; gap: 6px; }
+  .cap-items li::before { content: '·'; color: #334155; }
+  .cap-items li.has { color: #10b981; }
+  .cap-items li.has::before { color: #10b981; content: '✓'; font-size: 10px; }
+  .cap-items li.partial { color: #f59e0b; }
+  .cap-items li.partial::before { color: #f59e0b; content: '◑'; font-size: 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #1e293b;
+    color: #475569;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #111827;
+    color: #94a3b8;
+    vertical-align: top;
+  }
+  tr:hover td { background: #0d1117; }
+  td:first-child { color: #e2e8f0; font-weight: 500; }
+
+  .dropped {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: #f87171;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  .footer {
+    padding: 30px 40px;
+    text-align: center;
+    color: #1e293b;
+    font-size: 12px;
+    border-top: 1px solid #111827;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">以终为始 · 产品路线图</div>
+  <h1>SEO Machine</h1>
+  <p>AI 驱动的 SEO 内容工作台 — SaaS Web 产品，浏览器访问，无需安装</p>
+  <div class="hero-products">
+    <div class="product-pill"><span class="dot dot-saas"></span> SaaS Web（订阅制，云端）</div>
+    <div class="product-pill"><span class="dot dot-shared"></span> 核心 SEO 引擎</div>
+    <div class="product-pill" style="opacity:0.35; text-decoration:line-through;">Desktop App（已放弃）</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 状态概览 -->
+  <div class="section">
+    <div class="section-label">当前状态</div>
+    <div class="section-title">已完成 vs 待完成</div>
+    <div class="status-grid">
+      <div class="stat-card">
+        <div class="stat-number color-green">1</div>
+        <div class="stat-label">完成的阶段</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number color-yellow">4</div>
+        <div class="stat-label">待完成的阶段</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number color-blue">Web</div>
+        <div class="stat-label">唯一产品形态</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number color-gray">∞</div>
+        <div class="stat-label">SEO 深度研究空间</div>
+      </div>
+    </div>
+
+    <div class="arch-box">
+      <span class="highlight">用户</span>（浏览器，任意设备，无需安装）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      <span class="cyan">SaaS Web 前端</span>（React / Next.js）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      <span class="highlight">SaaS 后端 API</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="yellow">用户认证 & 订阅计费</span>（JWT + Stripe）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="yellow">用量追踪 & Fair Use 限速</span>（Redis）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="yellow">LLM 代理层</span>（统一持有 API Key，对外屏蔽）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      <span class="highlight">核心 SEO 引擎</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="green">关键词研究</span>（DataForSEO API）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="green">AI 内容生成</span>（DeepSeek / GPT-4o / Claude，按套餐路由）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="green">SEO 分析管道</span>（可读性 / 关键词密度 / 质量评分 0-100）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="green">发布连接器</span>（WordPress / Shopify / 自建站 Webhook）
+    </div>
+  </div>
+
+  <!-- 路线图 -->
+  <div class="section">
+    <div class="section-label">路线图</div>
+    <div class="section-title">五个阶段，从研究到上线</div>
+
+    <div class="phases">
+
+      <!-- Phase 0 已完成 -->
+      <div class="phase done">
+        <div class="phase-left">
+          <div class="phase-tag">已完成</div>
+          <div class="phase-number">Phase 0</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-name">基础整合 & 产品方向确立</div>
+          <div class="phase-desc">研究两个同源仓库，合并取长补短，明确产品形态和商业模型</div>
+          <div class="tasks">
+            <div class="task">
+              <div class="task-icon done">✓</div>
+              <div class="task-text done-text">分析 yuansir/seomachine（Tauri 桌面 App）和 TheCraigHewitt/seomachine（Claude Code 工作区）</div>
+            </div>
+            <div class="task">
+              <div class="task-icon done">✓</div>
+              <div class="task-text done-text">合并两个仓库：Tauri 框架 + 24 个 Claude 命令 + 11 个 AI Agent + 26 个营销 Skill + context 上下文 + data_sources 分析模块</div>
+            </div>
+            <div class="task">
+              <div class="task-icon done">✓</div>
+              <div class="task-text done-text">确定产品方向：只做 SaaS Web（放弃桌面 App，避免下载/更新/兼容问题）</div>
+            </div>
+            <div class="task">
+              <div class="task-icon done">✓</div>
+              <div class="task-text done-text">商业模型：月度订阅，平台统一承担 LLM 成本，后台 Fair Use 静默限速</div>
+            </div>
+            <div class="task">
+              <div class="task-icon done">✓</div>
+              <div class="task-text done-text">平台对接方案：WordPress（REST API）/ Shopify（OAuth）/ 自建站（Webhook）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="phase todo">
+        <div class="phase-left">
+          <div class="phase-tag">待开始</div>
+          <div class="phase-number">Phase 1</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-name">核心 SEO 引擎</div>
+          <div class="phase-desc">整个产品的地基，先把能力层跑通，再做界面</div>
+          <div class="tasks">
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">LLM 多模型路由（统一接口，按套餐选择 DeepSeek / GPT-4o mini / GPT-4o，超量自动降级）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">内容生成管道（关键词 → 大纲 → 分段写作 → 组装 → SEO 评分，支持流式输出）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">SEO 分析模块（可读性评分 / 关键词密度 / SERP 内容长度对比 / 综合质量评分 0-100）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">DataForSEO 集成（关键词搜索量 / 竞争度 / SERP 数据 / 竞品缺口分析）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">发布连接器 — WordPress（REST API + 应用程序密码，发文 / 存草稿）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">发布连接器 — Shopify（OAuth + Admin API，发布到 Blog Posts）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">发布连接器 — 自建站 Webhook（用户填接口地址 + API Key，通用 POST）</div>
+              <span class="task-badge badge-shared">引擎</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase todo">
+        <div class="phase-left">
+          <div class="phase-tag">待开始</div>
+          <div class="phase-number">Phase 2</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-name">SaaS 后端基础设施</div>
+          <div class="phase-desc">多租户系统，用量计费，成本控制，这是 SaaS 和普通 Web App 的本质区别</div>
+          <div class="tasks">
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">用户认证（注册 / 登录 / JWT / Google 一键登录）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">Stripe 订阅计费（Basic $29 / Pro $79 / Team $199，Webhook 处理支付状态同步）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">用量追踪（Redis 计数器，每用户记录每日篇数 / 月度 Token 消耗）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">Fair Use 限速中间件（超量 → 静默降级模型 / 队列延迟 / 软拒绝，服务条款注明）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">LLM 代理层（Key 只存服务端，客户端不可见，按用户套餐决定调哪个模型）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">请求缓存（Redis，相同关键词命中缓存则不调 LLM，成本为零）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">管理员后台（用户列表 / 用量监控 / 异常账户标记 / 收入概览）</div>
+              <span class="task-badge badge-saas">SaaS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase todo">
+        <div class="phase-left">
+          <div class="phase-tag">待开始</div>
+          <div class="phase-number">Phase 3</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-name">Web 前端产品</div>
+          <div class="phase-desc">用户看到的界面，流程要顺滑，第一次用就能产出一篇完整文章</div>
+          <div class="tasks">
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">Onboarding 流程（注册 → 绑定发布平台 → 填写品牌信息 → 生成第一篇，5 分钟内完成）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">关键词研究页（输入种子词 → 返回搜索量 / 竞争度 / 相关词 → 一键加入写作队列）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">AI 写作页（选关键词 → 生成大纲 → 确认或调整 → 流式生成全文）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">Markdown 编辑器（富文本编辑，右侧实时 SEO 评分面板）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">文章管理（草稿 / 已发布列表，一键选择平台发布，查看发布历史）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">渠道管理页（绑定 WordPress / Shopify / 自建站，支持同时绑定多个）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">品牌声音设置（目标受众 / 写作风格 / 竞品 / SEO 指南，影响所有生成内容）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">用量仪表盘（本月已用 / 剩余配额 / 套餐升级入口）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">订阅管理（升级 / 降级 / 取消，Stripe 客户门户）</div>
+              <span class="task-badge badge-saas">前端</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase todo">
+        <div class="phase-left">
+          <div class="phase-tag">待开始</div>
+          <div class="phase-number">Phase 4</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-name">SEO 深度研究 & 持续扩展</div>
+          <div class="phase-desc">基于深入 SEO 研究不断深化产品能力，与竞品拉开差距</div>
+          <div class="tasks">
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">Google Search Console 集成（排名 / 点击率 / 曝光量 → 指导优化哪些文章）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">Google Analytics 4 集成（流量 / 跳出率 / 转化 → 内容效果闭环分析）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">话题聚类策略（主题权威建设，自动生成 pillar + supporting 文章结构和内链计划）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">竞品内容缺口（竞品在排名但你没有的关键词机会，自动生成写作优先级）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">AI 引用审计（你的品牌在 ChatGPT / Claude / Perplexity 中是否被引用，如何提升）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">内容日历（基于关键词机会和用户网站情况，自动生成发布排期建议）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">内容复用（一篇文章 → 自动改写为 LinkedIn / Reddit / Medium / 邮件版本）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+            <div class="task">
+              <div class="task-icon todo"></div>
+              <div class="task-text">落地页生成（SEO 落地页 vs 博客文章不同策略，CRO 优化建议）</div>
+              <span class="task-badge badge-shared">研究</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 现有资产 -->
+  <div class="section">
+    <div class="section-label">现有资产</div>
+    <div class="section-title">仓库里已经有什么可以复用</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-header">
+          <div class="cap-icon" style="background:rgba(16,185,129,0.1)">⌨️</div>
+          <div>
+            <div class="cap-title">Claude Code 工作区</div>
+            <div class="cap-status">可立即使用，验证工作流</div>
+          </div>
+        </div>
+        <ul class="cap-items">
+          <li class="has">24 个 SEO 斜杠命令</li>
+          <li class="has">11 个专业 AI Agent</li>
+          <li class="has">26 个营销 Skill</li>
+          <li class="has">完整内容工作流目录</li>
+          <li class="has">11 个品牌上下文文件</li>
+          <li class="has">话题聚类 / 竞品分析</li>
+          <li class="has">WordPress 发布命令</li>
+        </ul>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-header">
+          <div class="cap-icon" style="background:rgba(245,158,11,0.1)">🔬</div>
+          <div>
+            <div class="cap-title">SEO 分析 Python 脚本</div>
+            <div class="cap-status">Phase 1 引擎的参考实现</div>
+          </div>
+        </div>
+        <ul class="cap-items">
+          <li class="has">关键词密度分析</li>
+          <li class="has">可读性评分（Flesch）</li>
+          <li class="has">内容长度 SERP 对比</li>
+          <li class="has">SEO 综合质量评分</li>
+          <li class="has">DataForSEO API 集成</li>
+          <li class="has">竞品缺口分析脚本</li>
+          <li class="partial">GA4 / GSC（需配置密钥）</li>
+        </ul>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-header">
+          <div class="cap-icon" style="background:rgba(99,102,241,0.1)">📋</div>
+          <div>
+            <div class="cap-title">产品设计文档</div>
+            <div class="cap-status">商业模型已明确</div>
+          </div>
+        </div>
+        <ul class="cap-items">
+          <li class="has">定价结构（$29/$79/$199）</li>
+          <li class="has">Fair Use 限速策略</li>
+          <li class="has">LLM 成本估算</li>
+          <li class="has">WordPress 对接方案</li>
+          <li class="has">Shopify OAuth 方案</li>
+          <li class="has">自建站 Webhook 方案</li>
+          <li class="has">竞品定价参考</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 决策记录 -->
+  <div class="section">
+    <div class="section-label">决策记录</div>
+    <div class="section-title">已明确、不再讨论的事项</div>
+    <table>
+      <thead>
+        <tr>
+          <th>决策项</th>
+          <th>结论</th>
+          <th>原因</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>产品形态</td>
+          <td>只做 SaaS Web <span class="dropped">桌面 App 已放弃</span></td>
+          <td>避免下载、安装、更新、多系统兼容问题，Web 部署一次所有人可用</td>
+        </tr>
+        <tr>
+          <td>计费模式</td>
+          <td>月度订阅，平台统一承担 LLM 成本</td>
+          <td>用户无需准备 API Key，降低门槛；后台 Fair Use 控制成本</td>
+        </tr>
+        <tr>
+          <td>成本控制</td>
+          <td>Fair Use：限速 + 模型降级 + 队列延迟</td>
+          <td>对普通用户无感知，服务条款注明，行业惯例</td>
+        </tr>
+        <tr>
+          <td>WordPress 对接</td>
+          <td>REST API + 应用程序密码</td>
+          <td>实现简单，主流方案，用户操作门槛低，无需插件</td>
+        </tr>
+        <tr>
+          <td>Shopify 对接</td>
+          <td>Partner App + OAuth</td>
+          <td>Shopify 标准路径，授权体验好，发布到 Blog Posts</td>
+        </tr>
+        <tr>
+          <td>自建站对接</td>
+          <td>通用 Webhook（用户填接口 + Key）</td>
+          <td>适配任意技术栈，用户控制两端，不依赖任何特定平台</td>
+        </tr>
+        <tr>
+          <td>LLM Key 管理</td>
+          <td>只存服务端，客户端不可见</td>
+          <td>安全性，同时支持按套餐路由和降级策略</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 下一步 -->
+  <div class="section">
+    <div class="section-label">下一步</div>
+    <div class="section-title">现在最该做的三件事</div>
+    <div class="tasks">
+      <div class="task" style="background:#0d1117; border-color: #6366f1;">
+        <div class="task-icon" style="background:#6366f1; color:#fff; width:22px; height:22px; font-size:12px;">1</div>
+        <div class="task-text" style="color:#e2e8f0;"><strong>先用现有 Claude Code 工作区生产真实内容</strong> — 填写 context/ 里的品牌文件，跑几次 /research 和 /write，亲身体验工作流，找到最需要改进的环节，这决定 Phase 1 的优先级</div>
+      </div>
+      <div class="task" style="background:#0d1117; border-color: #6366f1;">
+        <div class="task-icon" style="background:#6366f1; color:#fff; width:22px; height:22px; font-size:12px;">2</div>
+        <div class="task-text" style="color:#e2e8f0;"><strong>确定 Phase 1 的技术选型</strong> — 后端用 Next.js API Routes 还是独立 Node/Python 服务？数据库用 PostgreSQL 还是 Supabase？这两个选择决定整个架构</div>
+      </div>
+      <div class="task" style="background:#0d1117; border-color: #6366f1;">
+        <div class="task-icon" style="background:#6366f1; color:#fff; width:22px; height:22px; font-size:12px;">3</div>
+        <div class="task-text" style="color:#e2e8f0;"><strong>最小化 MVP 范围</strong> — Phase 1 + Phase 2 + Phase 3 的最简子集：能输入关键词、AI 生成一篇文章、发布到一个平台，就可以找第一批用户验证了</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  SEO Machine · 产品路线图 · 更新于 2026-06-22 · 桌面 App 已放弃，专注 SaaS Web
+</div>
+
+</body>
+</html>

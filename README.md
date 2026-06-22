@@ -1,180 +1,126 @@
-<div align="center">
-
 # SEO Machine
 
-**AI 驱动的 SEO 内容创作桌面应用**
+**AI 驱动的 SEO 内容 SaaS 平台**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/yuansir/seomachine/releases)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey.svg)](#installation)
-[![Built with Tauri](https://img.shields.io/badge/built%20with-Tauri-24C8D8.svg)](https://tauri.app)
-
-关键词研究 · AI 辅助写作 · SEO 分析 · WordPress 一键发布
-
-[下载](https://github.com/yuansir/seomachine/releases) · [报告 Bug](https://github.com/yuansir/seomachine/issues/new?template=bug_report.yml) · [功能请求](https://github.com/yuansir/seomachine/issues/new?template=feature_request.yml)
-
-</div>
+关键词研究 · AI 写作 · 多平台发布 · 用量管理
 
 ---
 
-## ✨ 功能特性
+## 产品定位
 
-| 功能 | 描述 |
-|------|------|
-| **🔍 关键词研究** | 通过 DataForSEO 获取搜索量、竞争度、趋势数据 |
-| **🕵️ 竞品分析** | 发现竞争对手排名但你尚未覆盖的内容缺口 |
-| **📊 SERP 分析** | 深度解析搜索结果页，理解排名因素 |
-| **🧩 话题聚类** | 按主题分组内容创意，构建话题权威 |
-| **⚡ 快速获胜** | 识别高影响力的即时优化机会 |
-| **🤖 AI 写作** | 基于研究数据由 AI 生成 SEO 优化文章 |
-| **✏️ 内置编辑器** | Markdown 编辑器，文章本地保存管理 |
-| **📈 内容分析** | 可读性评分、关键词密度、SEO 质量分析 |
-| **🚀 WordPress 发布** | 一键直发或保存为草稿到 WordPress |
-| **🔒 本地优先** | 所有数据存储在本地 SQLite，不依赖外部服务 |
+SEO Machine 是一个面向内容运营、独立站站长、SEO 从业者和电商卖家的 AI 内容创作 SaaS。
 
-## 📦 安装
+用户通过 Web 完成完整的 SEO 内容工作流：关键词研究 → AI 写作 → 内容优化 → 一键发布。
 
-> 所有安装包均由 GitHub Actions 自动构建并附在 [Releases](https://github.com/yuansir/seomachine/releases) 页。**无需安装任何服务器或后端。**
+> 桌面 App 版本已于 2026-06-22 放弃，专注 SaaS Web 形态。
 
-### macOS（Apple Silicon / Intel）
+---
 
-| 文件 | 芯片 | 说明 |
+## 核心能力
+
+| 能力模块 | 描述 |
+|---------|------|
+| 关键词研究 | DataForSEO 数据：搜索量、竞争度、SERP 分析、话题聚类 |
+| AI 内容写作 | 多模型路由（DeepSeek / GPT-4o mini / GPT-4o），按套餐分配 |
+| SEO 分析 | 可读性评分、关键词密度、竞品内容对比、0-100 质量评分 |
+| 多平台发布 | WordPress REST API、Shopify OAuth、自定义 Webhook |
+| 用量管理 | Redis 计数器、按套餐限速、Fair Use 静默执行 |
+| GA4 / GSC 集成 | 流量分析、排名追踪、内容优化建议 |
+
+---
+
+## 定价方案
+
+| 套餐 | 价格 | 每日限额 | 每篇字数 | 模型 |
+|------|------|---------|---------|------|
+| 基础版 | $29/月 | 5 篇 | 1500 字 | 超量降级 DeepSeek |
+| 专业版 | $79/月 | 20 篇 | 3000 字 | GPT-4o 全程 |
+| 团队版 | $199/月 | 无硬限制 | 无限制 | GPT-4o 全程 |
+
+---
+
+## 开发路线图
+
+详见 [`docs/20260622-product-roadmap.html`](docs/20260622-product-roadmap.html)（可视化 HTML）
+
+| 阶段 | 内容 | 状态 |
 |------|------|------|
-| `SEO.Machine_0.1.0_aarch64.dmg` | Apple Silicon (M1/M2/M3) | 推荐 |
-| `SEO.Machine_0.1.0_x64.dmg` | Intel Mac | |
+| Phase 0 | 仓库整合、工作区搭建、产品文档 | ✅ 完成 |
+| Phase 1 | 核心 SEO 引擎（LLM 路由、分析、发布连接器） | 待开发 |
+| Phase 2 | SaaS 后端（认证、Stripe、Redis 用量追踪） | 待开发 |
+| Phase 3 | Web 前端（研究页、写作页、编辑器、管理） | 待开发 |
+| Phase 4 | 深度 SEO 研究（GA4/GSC、聚类、竞品分析） | 待开发 |
 
-1. 从 [Releases](https://github.com/yuansir/seomachine/releases) 下载对应架构的 `.dmg`
-2. 打开 `.dmg`，将 `SEO Machine.app` 拖入 `/Applications`
-3. **首次启动**：右键点击 App → **打开**（绕过 macOS Gatekeeper 安全提示）
+---
 
-### Windows（x64）
+## 文档索引
 
-| 文件 | 说明 |
+| 文档 | 说明 |
 |------|------|
-| `SEO.Machine_0.1.0_x64-setup.exe` | NSIS 安装包（推荐） |
-| `SEO.Machine_0.1.0_x64_en-US.msi` | MSI 安装包 |
+| [`docs/20260622-product-roadmap.html`](docs/20260622-product-roadmap.html) | 可视化产品路线图（推荐阅读） |
+| [`docs/20260622-saas-product-design.md`](docs/20260622-saas-product-design.md) | SaaS 产品设计：定价、成本控制、架构 |
+| [`docs/20260622-decisions-log.md`](docs/20260622-decisions-log.md) | 所有关键决策记录及理由 |
+| [`docs/20260622-tech-architecture.md`](docs/20260622-tech-architecture.md) | 技术架构详解 |
+| [`docs/workspace/`](docs/workspace/) | Claude Code 工作区文档（内容研究/写作工作流） |
 
-1. 从 [Releases](https://github.com/yuansir/seomachine/releases) 下载 `.exe` 安装包
-2. 运行安装向导，按提示完成安装
-3. 从开始菜单或桌面快捷方式启动
+---
 
-### 从源码构建
-
-**环境要求：**
-- Node.js 18+ （推荐 22 LTS）
-- Rust 1.85+
-- pnpm 9+
-- Python 3.10+（SEO 研究脚本）
-
-```bash
-# 克隆仓库
-git clone https://github.com/yuansir/seomachine.git
-cd seomachine
-
-# 安装前端依赖
-pnpm install
-
-# Python 研究脚本依赖（可选，仅研究功能需要）
-pip install -r python-scripts/requirements.txt
-
-# 开发模式运行
-pnpm tauri dev
-
-# 生产构建
-pnpm tauri build
-```
-
-## 🚀 快速开始
-
-### 1. 配置 LLM（AI 写作功能）
-
-打开 **设置 → LLM**，添加 API 密钥：
-
-| 提供商 | Base URL | 说明 |
-|--------|----------|------|
-| **DeepSeek** | 内置 | 填入 DeepSeek API Key |
-| **OpenAI / 兼容接口** | 自定义 | 支持 OpenAI、Silicon Flow、Claude via OpenAI 兼容等 |
-
-> Claude API 可通过 OpenAI 兼容模式接入：Base URL = `https://api.anthropic.com/v1`
-
-### 2. 配置 DataForSEO（研究功能，可选）
-
-前往 **设置 → API 密钥**，填入 [DataForSEO](https://dataforseo.com) API 密钥。不配置时研究功能不可用，但 AI 写作和编辑器功能正常使用。
-
-### 3. 配置 WordPress（发布功能，可选）
-
-前往 **设置 → WordPress**，填入：
-- WordPress 站点地址（如 `https://yoursite.com`）
-- 用户名
-- [应用程序密码](https://wordpress.org/documentation/article/application-passwords/)（WordPress 5.6+ 内置支持）
-
-### 工作流示例
-
-```
-研究页面 → 运行竞品分析 → 保存研究结果
-    ↓
-撰写页面 → 选择研究 Brief → AI 生成文章
-    ↓
-编辑器 → 润色内容 → 保存
-    ↓
-文章管理 → 选择文章 → 发布到 WordPress
-```
-
-## 🖥️ 系统要求
-
-| 项目 | 最低要求 | 推荐配置 |
-|------|----------|----------|
-| 操作系统 | macOS 11 / Windows 10 | macOS 13 / Windows 11 |
-| 内存 | 4 GB | 8 GB |
-| 存储空间 | 200 MB | 500 MB |
-| 分辨率 | 1280×720 | 1920×1080 |
-
-## ⌨️ 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Cmd/Ctrl + ,` | 打开设置 |
-| `Cmd/Ctrl + S` | 保存当前文章 |
-| `Cmd/Ctrl + Z` | 撤销（编辑器内） |
-| `Cmd/Ctrl + Shift + Z` | 重做（编辑器内） |
-
-## 🛠️ 技术栈
-
-- **前端**: React 19 + TypeScript 5 + TailwindCSS 4 + shadcn/ui
-- **桌面框架**: [Tauri 2](https://tauri.app)（Rust 后端）
-- **状态管理**: Zustand 5
-- **本地数据库**: SQLite via `tauri-plugin-sql`
-- **AI 接入**: OpenAI SDK（兼容 DeepSeek / OpenAI / Claude 等）
-- **SEO 研究**: Python 脚本 via DataForSEO API
-
-## 📁 项目结构
+## 当前仓库结构
 
 ```
 seomachine/
-├── src/                    # React 前端源码
-│   ├── components/         # UI 组件
-│   ├── pages/              # 页面组件 (Research, Write, Editor, ...)
-│   ├── stores/             # Zustand 状态管理
-│   └── lib/                # 工具库 (db, llm, api-client)
-├── src-tauri/              # Tauri / Rust 后端
-│   ├── src/
-│   │   ├── commands/       # Tauri 命令 (python, wordpress, keys)
-│   │   └── db.rs           # SQLite 数据库初始化
-│   └── tauri.conf.json
-├── python-scripts/         # SEO 研究 Python 脚本
-└── docs/                   # 文档
+├── src/                    # 原桌面 App 前端（React + Tauri，待重构为 Web）
+├── src-tauri/              # 原 Tauri Rust 后端（Phase 1 后废弃）
+├── python-scripts/         # SEO 研究 Python 脚本（复用到 SaaS 后端）
+├── data_sources/           # 数据源模块（GA4、GSC、DataForSEO、分析器）
+│   └── modules/            # keyword_analyzer、readability_scorer、seo_quality_rater 等
+├── context/                # 品牌声音、SEO 规范、竞品分析等配置文件
+├── .claude/
+│   ├── commands/           # 24 个 SEO 工作流 slash commands
+│   ├── agents/             # 11 个 AI 专项 agent
+│   └── skills/             # 26 个营销技能
+├── topics/                 # 选题库
+├── research/               # 研究简报
+├── drafts/                 # 文章草稿
+├── published/              # 已发布
+├── rewrites/               # 改写版本
+└── docs/                   # 产品文档
+    └── workspace/          # Claude Code 工作区使用文档
 ```
 
-## 🤝 贡献
+---
 
-欢迎提交 Issue 和 Pull Request！请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
+## Claude Code 工作区（当前可用）
 
-## 🔒 隐私
+在 SaaS Web 上线之前，完整的 SEO 内容工作流可通过 Claude Code 直接使用。
 
-- **所有数据本地存储**：SQLite 数据库位于应用数据目录，不上传到任何服务器
-- **API 密钥安全存储**：通过 `tauri-plugin-store` 加密存储在本地
-- **网络请求**：仅通过你配置的 API（LLM 提供商、DataForSEO、WordPress）
+API 凭证配置：`data_sources/config/.env`
 
-## 📄 许可证
+### 常用命令
 
-[MIT](LICENSE) © 2026 SEO Machine Contributors
+```
+/research [topic]      关键词/竞品研究 → 输出到 research/
+/write [topic]         AI 写作全流程 → 输出到 drafts/
+/rewrite [topic]       更新现有内容 → 输出到 rewrites/
+/optimize [file]       SEO 最终优化
+/publish-draft [file]  发布到 WordPress
+/cluster [topic]       话题聚类策略
+/priorities            内容优先级矩阵
+```
+
+详细文档见 [`docs/workspace/`](docs/workspace/)
+
+---
+
+## 技术栈（规划）
+
+| 层级 | 技术选型（待 Phase 1 确认） |
+|------|---------------------------|
+| Web 前端 | Next.js App Router + TailwindCSS + shadcn/ui |
+| 后端 API | Next.js API Routes 或独立 Node.js 服务 |
+| 数据库 | PostgreSQL（Supabase 或自托管） |
+| 缓存/用量 | Redis |
+| 计费 | Stripe |
+| LLM | DeepSeek / GPT-4o mini / GPT-4o（多模型路由） |
+| SEO 数据 | DataForSEO API |
+| 发布连接器 | WordPress REST API、Shopify Admin API、Webhook |

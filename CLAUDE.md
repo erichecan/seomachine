@@ -142,3 +142,65 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 > Profile not yet configured. Run `/gsd:profile-user` to generate your developer profile.
 > This section is managed by `generate-claude-profile` -- do not edit manually.
 <!-- GSD:profile-end -->
+
+---
+
+## SEO Workspace Commands (Claude Code)
+
+The `.claude/` directory contains a full SEO content workflow for use directly in Claude Code (without the Tauri app). API credentials go in `data_sources/config/.env`.
+
+### Slash Commands
+
+- `/research [topic]` - Keyword/competitor research → brief in `research/`
+- `/write [topic]` - Full article in `drafts/`, auto-triggers SEO agents
+- `/rewrite [topic]` - Update existing content → `rewrites/`
+- `/optimize [file]` - Final SEO polish pass
+- `/analyze-existing [URL or file]` - Content health audit
+- `/performance-review` - Analytics-driven content priorities
+- `/publish-draft [file]` - Publish to WordPress via REST API
+- `/article [topic]` - Simplified article creation
+- `/cluster [topic]` - Full topic cluster strategy
+- `/priorities` - Content prioritization matrix
+- `/research-serp`, `/research-gaps`, `/research-trending`, `/research-performance`, `/research-topics`
+- `/research-ai-citations [topic]` - AI citation audit
+- `/repurpose [file]` - Adapts article for LinkedIn, Medium, Reddit, Quora
+- `/landing-write`, `/landing-audit`, `/landing-research`, `/landing-publish`, `/landing-competitor`
+
+### Python Analysis Scripts (in `python-scripts/`)
+
+```bash
+pip install -r python-scripts/requirements.txt
+python3 python-scripts/research_quick_wins.py
+python3 python-scripts/research_competitor_gaps.py
+python3 python-scripts/research_performance_matrix.py
+python3 python-scripts/research_priorities_comprehensive.py
+python3 python-scripts/research_serp_analysis.py
+python3 python-scripts/research_topic_clusters.py
+python3 python-scripts/research_trending.py
+python3 python-scripts/seo_baseline_analysis.py
+python3 python-scripts/seo_bofu_rankings.py
+python3 python-scripts/seo_competitor_analysis.py
+python3 python-scripts/test_dataforseo.py
+```
+
+### Content Pipeline
+
+`topics/` → `research/` → `drafts/` → `published/`  
+Rewrites → `rewrites/`. Brand context in `context/`.
+
+### Python Analysis Pipeline (data_sources/modules/)
+
+- `search_intent_analyzer.py` - Query intent classification
+- `keyword_analyzer.py` - Density, distribution, stuffing detection
+- `content_length_comparator.py` - Benchmarks vs top 10 SERP results
+- `readability_scorer.py` - Flesch Reading Ease, grade level
+- `seo_quality_rater.py` - Comprehensive 0-100 SEO score
+- `google_analytics.py` / `google_search_console.py` / `dataforseo.py`
+- `wordpress_publisher.py` - Publishes with Yoast SEO metadata
+
+### Context Files (context/)
+
+Edit these to match your brand before using any commands:
+- `brand-voice.md`, `style-guide.md`, `seo-guidelines.md`
+- `internal-links-map.md`, `features.md`, `competitor-analysis.md`
+- `cro-best-practices.md`, `ai-citation-targets.md`
